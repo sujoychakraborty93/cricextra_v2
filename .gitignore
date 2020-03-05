@@ -1,0 +1,16 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+# ignore everything inside react_code directory except build directory 
+node_code/react_code/*
+!node_code/react_code/build
+
+# production
+#react_code/build
+
+# testing
+node_code/react_code/coverage
+
+# dependencies
+node_code/node_modules
+node_code/.env
