@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const path = require("path");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const getroutes = require("./routes/get");
@@ -12,10 +13,7 @@ var AWS = require("aws-sdk");
 require("dotenv/config");
 
 if (process.env.NODE_ENV === "PROD") {
-  app.use(express.static(path.join(__dirname, "client/build")));
-  app.get("*", (req, res) => {
-    res.sendfile(path.join((__dirname = "client/build/index.html")));
-  });
+  app.use(express.static(path.join(__dirname, "react_code/build")));
 }
 
 // Multer ships with storage engines DiskStorage and MemoryStorage
@@ -73,7 +71,11 @@ app.use("/api/", getroutes);
 app.use("/api/post", postroutes);
 app.use("/api/put", putroutes);
 app.use("/api/delete", deleteroutes);
-
+if (process.env.NODE_ENV === "PROD") {
+  app.get("/*", (req, res) => {
+    res.sendFile(path.join(__dirname, "/react_code/build/index.html"));
+  });
+}
 const port = process.env.PORT || 4000;
 app.listen(port, () => {
   console.log(`Listening on ${port}...`);
